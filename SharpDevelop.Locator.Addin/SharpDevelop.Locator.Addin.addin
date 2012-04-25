@@ -1,0 +1,15 @@
+﻿<AddIn name        = "SharpDevelop.Locator.Addin"
+       author      = "Fabien"
+       url         = ""
+       description = "TODO: Put description here">
+  
+  <Runtime>
+    <Import assembly = "SharpDevelop.Locator.Addin.dll"/>
+  </Runtime>
+  
+  <!-- Extend the SharpDevelop AddIn-Tree like this:
+  <Path name = ...>
+    <.../>
+  </Path>
+  -->
+</AddIn>
