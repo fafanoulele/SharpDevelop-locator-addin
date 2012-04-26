@@ -1,9 +1,0 @@
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\Locator.addin
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\SharpDevelop.Addin.Locator.dll
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\SharpDevelop.Addin.Locator.pdb
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\ICSharpCode.AvalonEdit.dll
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\ICSharpCode.Core.dll
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\bin\Debug\ICSharpCode.SharpDevelop.dll
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\obj\Debug\ResolveAssemblyReference.cache
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\obj\Debug\SharpDevelop.Addin.Locator.dll
-D:\dev\SharpDevelop-locator-addin\SharpDevelop.Locator.Addin\obj\Debug\SharpDevelop.Addin.Locator.pdb
