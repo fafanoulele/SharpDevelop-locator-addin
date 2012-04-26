@@ -10,6 +10,6 @@
   <Path name = "/SharpDevelop/ViewContent/TextEditor/ContextMenu">
     <MenuItem id = "LocateInProjectsExplorer"
               label = "Locate in projects explorer"
-              class = "SharpDevelop.Addin.Locator."/>
+              class = "SharpDevelop.Addin.Locator.LocateInProjectsExplorer"/>
   </Path>
 </AddIn>
