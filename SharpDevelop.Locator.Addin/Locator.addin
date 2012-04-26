@@ -1,6 +1,6 @@
 ﻿<AddIn name        = "Locator Addin"
        author      = "Fabien Bousquet"
-       url         = ""
+       url         = "https://github.com/fafanoulele/SharpDevelop-locator-addin"
        description = "Locate file in views explorer">
   
   <Runtime>
