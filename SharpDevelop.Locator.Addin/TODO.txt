@@ -1,0 +1,1 @@
+﻿=> Rename SharpDevelop.Addin.Locator (or ShowInView) for solution and project
