@@ -26,77 +26,36 @@ namespace SharpDevelop.Addin.Locator
   public class LocateInProjectsExplorer : AbstractMenuCommand
   {
     /// <summary>
-    /// Starts the command
+    /// Locate current file in Projects explorer
     /// </summary>
     public override void Run()
     {
       Solution solution = ProjectService.OpenSolution;
-      
       if (solution != null)  // OpenSolution is null when no solution is opened
       {
-        string fileName = "";
-        FileInfo fiSolution = new FileInfo(solution.FileName);
-        List<IProject> projects = new List<IProject>(solution.Projects);
         
-        foreach (IProject fiProject in projects) 
+        ClassBrowserPad classBrowser = ICSharpCode.SharpDevelop.Gui.ClassBrowser.ClassBrowserPad.Instance;
+
+        ProjectBrowserPad pad = ProjectBrowserPad.Instance;
+        if (pad == null) return;
+        
+        ITextEditorProvider provider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
+        
+        if (provider == null)
+          return;
+        
+        string currentFileName = provider.TextEditor.FileName;
+        
+        if(currentFileName == null)
         {
-          foreach(ProjectItem projectItem in fiProject.Items)
-          {
-            //projectItem.
-            fileName = projectItem.FileName;
-          }
+          return;
         }
         
+        pad.ProjectBrowserControl.SelectFileAndExpand(currentFileName);
         
-        //AbstractProjectBrowserTreeNode;
-        
-     ClassBrowserPad classBrowser = ICSharpCode.SharpDevelop.Gui.ClassBrowser.ClassBrowserPad.Instance;
-     //classBrowser.
-			ProjectBrowserPad pad = ProjectBrowserPad.Instance;
-			if (pad == null) return;
-			
-			//node.Visible();
-					//OverlayIconManager.EnqueueParents(node);
-					foreach(IViewContent	content in	WorkbenchSingleton.Workbench.ViewContentCollection)
-					{
-					  //content.I
-					  //content.PrimaryFile
-					}
-					
-					ITextEditorProvider provider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
-			
-			if (provider == null)
-				return;
-			
-			//pad.SolutionNode.Nodes;
-			
-			FileNode node = pad.ProjectBrowserControl.FindFileNode(provider.TextEditor.FileName);
-			
-			//TODO CHeck if node.IsVisible
-			//pad.SelectedNode;
-			
-			if (node == null) return;
-			
-			//node.Parent.Expand();
-			//node.ActivateItem();
-			//node.IsExpanded;
-			//node.Expanding();
-			  //node.Expand();
-			  
-			  //TODO Sinon faire le contraire pour que le dossier plus proche soit selectionné
-//			  TreeNode pNode = node.Parent;
-//			  while(pNode !=null)
-//			  {
-//			    if(!pNode.IsExpanded)
-//			    {
-//			      pNode.Expand();
-//			    }
-//			    pNode = pNode.Parent;
-//			  }
-			  
-			  node.EnsureVisible();
-   }
-    
+      }
+      
     }
   }
+  
 }

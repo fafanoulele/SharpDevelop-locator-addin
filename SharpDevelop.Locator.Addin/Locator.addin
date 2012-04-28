@@ -1,15 +1,32 @@
 ﻿<AddIn name        = "Locator Addin"
        author      = "Fabien Bousquet"
        url         = "https://github.com/fafanoulele/SharpDevelop-locator-addin"
-       description = "Locate file in views explorer">
+       description = "Locate file in projects explorer">
   
   <Runtime>
     <Import assembly = "SharpDevelop.Locator.Addin.dll"/>
   </Runtime>
   
+  <Manifest>
+        <Identity name="Locator" version="1.0"/>
+        <Dependency addin="SharpDevelop" version="4.1"/>
+  </Manifest>
+  
   <Path name = "/SharpDevelop/ViewContent/TextEditor/ContextMenu">
     <MenuItem id = "LocateInProjectsExplorer"
               label = "Locate in projects explorer"
+              shortcut = "Control|L"
               class = "SharpDevelop.Addin.Locator.LocateInProjectsExplorer"/>
   </Path>
+  
+  <!-- Adding this block because otherwise the shortcut does not work in the context menu of the text editor.-->
+  <Path name = "/Workspace/Tools">
+    <Condition name="SolutionOpen" action="Disable">
+      <MenuItem id = "LocateInProjectsExplorerToolbar"
+                label = "Locate in projects explorer"
+                shortcut = "Control|L"
+                class = "SharpDevelop.Addin.Locator.LocateInProjectsExplorer"/>
+    </Condition>
+  </Path>
+
 </AddIn>

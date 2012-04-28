@@ -17,6 +17,8 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunCodeAnalysis>False</RunCodeAnalysis>
     <StartAction>Program</StartAction>
+    <SourceAnalysisOverrideSettingsFile>C:\Users\Fabien\AppData\Roaming\ICSharpCode/SharpDevelop4\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <RunSourceAnalysis>False</RunSourceAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>..\..\..\toolbox\dotnet\SharpDevelop\4.1\AddIns\Misc\Locator\</OutputPath>

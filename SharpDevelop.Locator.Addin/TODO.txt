@@ -1,1 +1,2 @@
-﻿
+﻿- Automates the build with msbuild + script.bat
+- Build .sdaddin archive delivery
