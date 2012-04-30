@@ -4,7 +4,6 @@
  * Date: 26/04/2012
  * Time: 22:37
  * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
 using System.Collections.Generic;
@@ -35,7 +34,7 @@ namespace SharpDevelop.Addin.Locator
       {
         
         ClassBrowserPad classBrowser = ICSharpCode.SharpDevelop.Gui.ClassBrowser.ClassBrowserPad.Instance;
-
+                
         ProjectBrowserPad pad = ProjectBrowserPad.Instance;
         if (pad == null) return;
         
