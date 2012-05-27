@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTarget="Build">
   
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
@@ -28,7 +28,7 @@
     </ItemGroup>
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="SharpDevelop.Locator.Addin\bin\Release\" 
-         ZipFileName="SharpDevelop.Locator.Addin\bin\Release\SharpDevelop-Locator-Addin-$(version).zip"
+         ZipFileName="SharpDevelop.Locator.Addin\bin\Release\SharpDevelop-Locator-Addin-$(version).sdaddin"
          ZipLevel="9" /> 
   </Target>
 
