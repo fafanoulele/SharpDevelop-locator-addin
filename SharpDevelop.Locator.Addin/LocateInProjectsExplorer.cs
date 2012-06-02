@@ -7,9 +7,9 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Editor;
@@ -24,6 +24,29 @@ namespace SharpDevelop.Addin.Locator
   /// </summary>
   public class LocateInProjectsExplorer : AbstractMenuCommand
   {
+    private Dictionary<string, TreeNode> cache = new Dictionary<string, TreeNode>();
+    
+    public LocateInProjectsExplorer()
+    {
+      Solution solution = ProjectService.OpenSolution;
+      
+      if (solution != null)  // OpenSolution is null when no solution is opened
+      {
+        LoadNodesInCache();
+      }
+    }
+    
+    private void LoadNodesInCache()
+    {
+      cache.Clear();
+      
+      ProjectBrowserPad pad = ProjectBrowserPad.Instance;
+        
+      TreeNode tn = pad.ProjectBrowserControl.RootNode;
+        
+      PutInCache(tn.Nodes);
+    }
+    
     /// <summary>
     /// Locate current file in Projects explorer
     /// </summary>
@@ -33,7 +56,12 @@ namespace SharpDevelop.Addin.Locator
       //ProjectService.ProjectItemAdded
       if (solution != null)  // OpenSolution is null when no solution is opened
       {
-                 
+        
+        if(cache.Count==0)
+        {
+          LoadNodesInCache();
+        }
+                 //ProjectService.SolutionLoaded
         ProjectBrowserPad pad = ProjectBrowserPad.Instance;
         if (pad == null) return;
         
@@ -41,58 +69,44 @@ namespace SharpDevelop.Addin.Locator
         
         if(WorkbenchSingleton.Workbench.ActiveWorkbenchWindow == null) return;
         
-         ITextEditorProvider provider = WorkbenchSingleton.Workbench.ActiveWorkbenchWindow.ActiveViewContent as ITextEditorProvider;
+        ITextEditorProvider provider = WorkbenchSingleton.Workbench.ActiveWorkbenchWindow.ActiveViewContent as ITextEditorProvider;
                  
         if (provider == null)
           return;
         
-        //provider.TextEditorControl.Refresh();
+        string currentFileName = FormatFilepath(provider.TextEditor.FileName);
         
-        string currentFileName = provider.TextEditor.FileName;//En fait c'est parfois pas le Filename en cours...
-        //provider.TextEditor.SelectionChanged:
-        //provider.TextEditor.KeyPress (for Ctr-l)...
         if(currentFileName == null)
         {
           return;
         }
+                
+        TreeNode node;
         
-        //AvalonEditViewContent...
-        TreeNode tn = pad.ProjectBrowserControl.RootNode;//Parfois c'est la pas solution..;
+        if(cache.TryGetValue(currentFileName, out node))
+        {
+          node.EnsureVisible();
+          node.TreeView.SelectedNode = node;
+        }
         
-        TreeNode test = FindFileNode(tn.Nodes, currentFileName);//Bug return null...
-        
-        if (test != null)
-				{
-					for (TreeNode parent = test.Parent; parent != null; parent = parent.Parent)
-					{
-						parent.Expand();
-					}
-					test.TreeView.SelectedNode = test;
-				}
-        //Or use test.EnsureVisible():
-        
-          //pad.ProjectBrowserControl.SelectFileAndExpand(currentFileName);
-        
-        //WorkbenchSingleton.Workbench.ShowPad
       }
-      
     }
     
-    //En fait Ctr-G il ne prend pas en compte les fichier build.bat (en dehors des projets ?)
-    private TreeNode FindFileNode(TreeNodeCollection nodes, string fileName)
+    private void PutInCache(TreeNodeCollection nodes)
 		{
 			foreach (TreeNode treeNode in nodes)
 			{
 				FileNode fileNode = treeNode as FileNode;
-				if (fileNode != null && FileUtility.IsEqualFileName(fileNode.FileName, fileName))
+
+				if (fileNode != null)
 				{
-					return fileNode;
+				  cache.Add(FormatFilepath(fileNode.FileName), fileNode);
 				}
 				
 				SolutionItemNode itemNode = treeNode as SolutionItemNode;
-				if (itemNode != null && FileUtility.IsEqualFileName(itemNode.FileName, fileName))
+				if (itemNode != null)
 				{
-					return itemNode;
+				  cache.Add(FormatFilepath(itemNode.FileName), itemNode);
 				}
 				
 				if (treeNode != null && treeNode.Nodes != null && treeNode.Nodes.Count > 0)
@@ -103,19 +117,31 @@ namespace SharpDevelop.Addin.Locator
 					  //Si on ne fait pas cela, dans le cas où le tree est fermé au démarrage de SharpDevelop alors pas de noeud trouvé...
 					  treeNode.Expand();
 					  treeNode.Collapse();
-					  
 					}
-				  
-					TreeNode result = this.FindFileNode(treeNode.Nodes, fileName);
+				  //Recursive
+					this.PutInCache(treeNode.Nodes);
 										
-					if (result != null)
-					{
-						return result;
-					}
 				}
 			}
-			return null;
+
 		}
+    
+    private string FormatFilepath(string filename)
+    {
+      //volume letter is case insenstive...=> Set volume drive letter in upper case
+      
+      int volumeIndex = filename.IndexOf(Path.VolumeSeparatorChar);
+      if(volumeIndex >= 0)
+      {
+        string result = filename.Substring(0, volumeIndex).ToUpper(CultureInfo.CurrentCulture);
+        
+        result += filename.Substring(volumeIndex, filename.Length-1);
+        
+        return result;
+      }
+      
+      return filename;
+    }
   }
   
 }
