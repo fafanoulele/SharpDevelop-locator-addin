@@ -34,6 +34,30 @@ namespace SharpDevelop.Addin.Locator
       {
         LoadNodesInCache();
       }
+      
+      ProjectService.SolutionLoaded += delegate(object sender, SolutionEventArgs e) 
+      {
+        LoadNodesInCache();
+      };
+      
+      ProjectService.ProjectItemAdded += delegate(object sender, ProjectItemEventArgs e) 
+      {
+        ProjectBrowserPad pad = ProjectBrowserPad.Instance;
+        
+        if (pad == null) return;
+        
+        FileNode newNode = pad.ProjectBrowserControl.FindFileNode(e.ProjectItem.FileName);
+        
+        if (newNode == null) return;
+        
+        cache.Add(FormatFilepath(e.ProjectItem.FileName), newNode);
+      };
+      
+      ProjectService.ProjectItemRemoved += delegate(object sender, ProjectItemEventArgs e) 
+      {
+        cache.Remove(FormatFilepath(e.ProjectItem.FileName));
+      };
+      
     }
     
     private void LoadNodesInCache()
@@ -41,7 +65,9 @@ namespace SharpDevelop.Addin.Locator
       cache.Clear();
       
       ProjectBrowserPad pad = ProjectBrowserPad.Instance;
-        
+      
+      if (pad == null) return;
+
       TreeNode tn = pad.ProjectBrowserControl.RootNode;
         
       PutInCache(tn.Nodes);
@@ -53,7 +79,7 @@ namespace SharpDevelop.Addin.Locator
     public override void Run()
     {
       Solution solution = ProjectService.OpenSolution;
-      //ProjectService.ProjectItemAdded
+      
       if (solution != null)  // OpenSolution is null when no solution is opened
       {
         
@@ -61,7 +87,7 @@ namespace SharpDevelop.Addin.Locator
         {
           LoadNodesInCache();
         }
-                 //ProjectService.SolutionLoaded
+        
         ProjectBrowserPad pad = ProjectBrowserPad.Instance;
         if (pad == null) return;
         
@@ -113,8 +139,7 @@ namespace SharpDevelop.Addin.Locator
 				{
 				  if(!treeNode.IsExpanded)
 					{
-					  //(Faire cela au démarrage c.à.d dans le constructeur de l'action => Faire un expand et un Collapse de tout...)
-					  //Si on ne fait pas cela, dans le cas où le tree est fermé au démarrage de SharpDevelop alors pas de noeud trouvé...
+					  //Bug ? => if treenode has not expanded then sometimes, children nodes have not been found !
 					  treeNode.Expand();
 					  treeNode.Collapse();
 					}
