@@ -4,7 +4,7 @@
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
   
   <PropertyGroup>
-    <version>1.0</version>
+    <version>1.1</version>
   </PropertyGroup>
   
   <ItemGroup>
